@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 
 const UserCard = ({ user, onUpdate, onDelete }) => {
   const [show, setShow] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
   const [liked, setLiked] = useState(false);
 
-  // Fixed avatar URL
   const avatarUrl = `https://api.dicebear.com/9.x/notionists/svg?seed=${user.username}&options[mood][]=happy`;
 
   const handleInputChange = (e) => {
@@ -15,8 +14,8 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
   };
 
   const handleSave = () => {
-    onUpdate(editedUser); // Save updated user info
-    setShow(false); // Close modal
+    onUpdate(editedUser);
+    setShow(false);
   };
 
   const handleNestedInputChange = (e, field, subField) => {
@@ -32,7 +31,6 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
 
   return (
     <>
-      {/* User Card */}
       <div className="card">
         <img
           src={avatarUrl}
@@ -48,7 +46,6 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
             <strong>Company:</strong> {user.company.name} <br />
           </p>
           <div className="d-flex justify-content-between">
-            {/* Like Button */}
             <button
               className={`btn ${liked ? "btn-success" : "btn-outline-success"}`}
               onClick={() => setLiked(!liked)}
@@ -56,7 +53,6 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
               {liked ? "Liked" : "Like 👍🏽"}
             </button>
 
-            {/* Edit Button */}
             <button
               className="btn btn-outline-primary"
               onClick={() => setShow(true)}
@@ -64,7 +60,6 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
               Edit 📝
             </button>
 
-            {/* Delete Button */}
             <button
               className="btn btn-outline-danger"
               onClick={() => onDelete(user.id)}
@@ -75,34 +70,38 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
         </div>
       </div>
 
-      {/* Enhanced Edit Modal */}
+      {/* Enhanced Edit Modal with Grid Layout */}
       <Modal show={show} onHide={() => setShow(false)} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Edit User Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            {/* Name Field */}
-            <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={editedUser.name}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            {/* Email Field */}
-            <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={editedUser.email}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+            {/* Grid Layout with Name and Email in same row */}
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="name"
+                    value={editedUser.name}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={editedUser.email}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
             {/* Phone Field */}
             <Form.Group className="mb-3">
@@ -115,31 +114,35 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
               />
             </Form.Group>
 
-            {/* Address - Street Field */}
-            <Form.Group className="mb-3">
-              <Form.Label>Street</Form.Label>
-              <Form.Control
-                type="text"
-                name="street"
-                value={editedUser.address.street}
-                onChange={(e) =>
-                  handleNestedInputChange(e, "address", "street")
-                }
-              />
-            </Form.Group>
-
-            {/* Address - City Field */}
-            <Form.Group className="mb-3">
-              <Form.Label>City</Form.Label>
-              <Form.Control
-                type="text"
-                name="city"
-                value={editedUser.address.city}
-                onChange={(e) =>
-                  handleNestedInputChange(e, "address", "city")
-                }
-              />
-            </Form.Group>
+            {/* Address Fields - Street and City in the same row */}
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Street</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="street"
+                    value={editedUser.address.street}
+                    onChange={(e) =>
+                      handleNestedInputChange(e, "address", "street")
+                    }
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>City</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="city"
+                    value={editedUser.address.city}
+                    onChange={(e) =>
+                      handleNestedInputChange(e, "address", "city")
+                    }
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
             {/* Company Field */}
             <Form.Group className="mb-3">
@@ -156,10 +159,10 @@ const UserCard = ({ user, onUpdate, onDelete }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
+          <Button variant="secondary" onClick={() => setShow(false)} size="lg">
             Cancel
           </Button>
-          <Button variant="success" onClick={handleSave}>
+          <Button variant="success" onClick={handleSave} size="lg">
             Save Changes
           </Button>
         </Modal.Footer>

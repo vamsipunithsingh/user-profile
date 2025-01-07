@@ -62,8 +62,8 @@ const App = () => {
             <Button 
               variant="outline-light" 
               onClick={handleAddUser} 
-              className="ms-3"> {/* ms-3 adds spacing to the right */}
-              
+              className="ms-3 text-white border border-dark bg-black"> {/* ms-3 adds spacing to the right */}
+              + Add New User
             </Button>
         </Container>
       
